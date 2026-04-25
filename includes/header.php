@@ -141,7 +141,7 @@ if (!isset($paginaActual)) $paginaActual = '';
                         </a>
                     </div>
 
-                    <div class="nav-item px-3">
+                    <div class="nav-item px-4">
                         <a class="nav-link <?= $paginaActual === 'area_conocimiento' ? 'active' : '' ?>"
                            href="<?= $baseUrl ?>/pages/area_conocimiento.php">
                             <span class="bi bi-list-nested-nav-menu"></span> Área de Conocimiento
@@ -155,7 +155,7 @@ if (!isset($paginaActual)) $paginaActual = '';
                         </a>
                     </div>
 
-                    <div class="nav-item px-3">
+                    <div class="nav-item px-4">
                         <a class="nav-link <?= $paginaActual === 'linea_investigacion' ? 'active' : '' ?>"
                            href="<?= $baseUrl ?>/pages/linea_investigacion.php">
                             <span class="bi bi-list-nested-nav-menu"></span> Linea de Investigación
@@ -203,23 +203,30 @@ if (!isset($paginaActual)) $paginaActual = '';
                     </div>
 
                     <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'cliente' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/cliente.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Cliente
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'vendedor' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/vendedor.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Vendedor
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
                         <a class="nav-link <?= $paginaActual === 'docente' ? 'active' : '' ?>"
                            href="<?= $baseUrl ?>/pages/docente.php">
                             <span class="bi bi-list-nested-nav-menu"></span> Docente
+                        </a>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <a class="nav-link <?= $paginaActual === 'evaluacion_docente' ? 'active' : '' ?>"
+                           href="<?= $baseUrl ?>/pages/evaluacion_docente.php">
+                            <span class="bi bi-list-nested-nav-menu"></span> Evaluación Docente
+                        </a>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <a class="nav-link <?= $paginaActual === 'reconocimiento' ? 'active' : '' ?>"
+                           href="<?= $baseUrl ?>/pages/reconocimiento.php">
+                            <span class="bi bi-list-nested-nav-menu"></span> Reconocimiento
+                        </a>
+                    </div>
+
+                    <div class="nav-item px-3">
+                        <a class="nav-link <?= $paginaActual === 'experiencia' ? 'active' : '' ?>"
+                           href="<?= $baseUrl ?>/pages/experiencia.php">
+                            <span class="bi bi-list-nested-nav-menu"></span> Experiencia
                         </a>
                     </div>
 

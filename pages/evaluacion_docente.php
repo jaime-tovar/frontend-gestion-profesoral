@@ -148,7 +148,6 @@ if ($vista === 'formulario') {
                         <th>Docente</th>
                         <th>Semestre</th>
                         <th>Calificación</th>
-                        <th>Fecha Creación</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -158,7 +157,6 @@ if ($vista === 'formulario') {
                             <td><?= $e['nombre_docente'] ?></td>
                             <td><?= $e['semestre'] ?></td>
                             <td><?= $e['calificacion'] ?></td>
-                            <td><?= $e['fecha_creacion'] ?></td>
                             <td>
                                 <a href="evaluacion_docente.php?vista=ver&id=<?= $e['id'] ?>" class="btn btn-info btn-sm">Ver</a>
                                 <a href="evaluacion_docente.php?vista=formulario&editar=<?= $e['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
@@ -187,6 +185,7 @@ if ($vista === 'formulario') {
                     <p><strong>Docente:</strong> <?= $evaluacion['nombre_docente'] ?></p>
                     <p><strong>Semestre:</strong> <?= $evaluacion['semestre'] ?></p>
                     <p><strong>Calificación:</strong> <?= $evaluacion['calificacion'] ?></p>
+                    <p><strong>Fecha creación:</strong> <?= $evaluacion['fecha_creacion'] ?></p>
                 </div>
             </div>
         <?php endif; ?>
