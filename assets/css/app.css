@@ -24,13 +24,7 @@ main {
     min-height: 3.5rem;
     background-color: rgba(0, 0, 0, 0.4);
     border-bottom: none;
-    justify-content: center;
-}
-
-.sidebar .top-row .container-fluid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
 }
 
 main > .top-row {
@@ -117,13 +111,19 @@ main > .top-row {
     background: none;
     border: none;
     border-radius: 4px;
+    height: 3rem;
     display: flex;
     align-items: center;
-    line-height: 1.2;
-    min-height: 2.5rem;
-    padding: 0.5rem 0.75rem;
+    line-height: 3rem;
     width: 100%;
     text-decoration: none;
+}
+
+/* Permitir que los items del acordeon hagan wrap en responsive */
+.nav-accordion .nav-link {
+    height: auto;
+    line-height: 1.2;
+    padding: 0.5rem 0.75rem;
     white-space: normal;
 }
 
@@ -137,57 +137,37 @@ main > .top-row {
     color: white;
 }
 
-/* ───────── 5.1. ACORDEON DEL MENU ───────── */
-
-.nav-accordion > summary {
-    list-style: none;
-}
-
-.nav-accordion > summary::-webkit-details-marker {
-    display: none;
-}
-
+/* Indicador de flecha para el acordeon del menu */
 .nav-accordion__summary {
-    cursor: pointer;
-    color: #d7d7d7;
-    border-radius: 4px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    line-height: 1.2;
+    height: auto;
     min-height: 2.5rem;
-    padding: 0.5rem 0.75rem;
+    line-height: 1.2;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    white-space: normal;
+    padding-right: 2rem;
 }
 
-/* Flecha indicadora de despliegue del menu */
 .nav-accordion__summary::after {
     content: "";
-    border: solid #d7d7d7;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(-45deg);
-    transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.nav-accordion__summary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.nav-accordion__summary:hover::after {
-    border-color: white;
-}
-
-.nav-accordion[open] > .nav-accordion__summary {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid #d7d7d7;
+    border-bottom: 2px solid #d7d7d7;
+    transform: translateY(-60%) rotate(-45deg);
 }
 
 .nav-accordion[open] > .nav-accordion__summary::after {
-    transform: rotate(45deg);
-    border-color: white;
+    transform: translateY(-40%) rotate(45deg);
+    border-right-color: white;
+    border-bottom-color: white;
 }
 
 .nav-scrollable {

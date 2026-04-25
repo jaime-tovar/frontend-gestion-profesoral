@@ -81,6 +81,22 @@ $baseUrl = rtrim(str_replace('/pages', '', $scriptDir), '/');
 // Si la pagina no definio $paginaActual, ponerla en '' (vacio).
 // $paginaActual se usa para resaltar el link activo en el sidebar.
 if (!isset($paginaActual)) $paginaActual = '';
+
+// Usar el nombre del archivo actual para marcar el menu activo.
+$currentPage = basename($_SERVER['SCRIPT_NAME']);
+
+// Helper simple para comparar archivos activos.
+function isActivePage(string $currentPage, array $files): bool {
+    return in_array($currentPage, $files, true);
+}
+
+// Grupos del menu para el acordeon.
+$grupoCatalogos = ['facultad.php', 'programa.php', 'area_conocimiento.php', 'linea_investigacion.php', 'termino_clave.php', 'red.php'];
+$grupoDocentes = ['docente.php', 'intereses_futuros.php'];
+$grupoFormacion = ['estudios_realizados.php'];
+$grupoEstructura = ['docente_departamento.php'];
+$grupoRedesAcademicas = [];
+$grupoSeguridad = ['usuario.php', 'rol.php'];
 ?>
 <!-- A partir de aca es HTML puro (con algo de PHP mezclado) -->
 <!DOCTYPE html>
@@ -135,100 +151,90 @@ if (!isset($paginaActual)) $paginaActual = '';
                           $paginaActual = 'factura';   (en factura.php)
                     -->
                     <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'home' ? 'active' : '' ?>"
+                        <a class="nav-link <?= isActivePage($currentPage, ['home.php']) ? 'active' : '' ?>"
                            href="<?= $baseUrl ?>/pages/home.php">
-                            <span class="bi bi-house-door-fill-nav-menu"></span> Home
+                            Home
                         </a>
                     </div>
 
-                    <div class="nav-item px-4">
-                        <a class="nav-link <?= $paginaActual === 'area_conocimiento' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/area_conocimiento.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Área de Conocimiento
-                        </a>
-                    </div>
+                    <!-- Menu en acordeon usando <details> para no depender de JavaScript -->
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoCatalogos) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Catálogos</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['facultad.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/facultad.php">Facultad</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['programa.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/programa.php">Programa</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['area_conocimiento.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/area_conocimiento.php">Área de Conocimiento</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['linea_investigacion.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/linea_investigacion.php">Línea de Investigación</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['termino_clave.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/termino_clave.php">Términos Clave</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['red.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/red.php">Red</a>
+                        </div>
+                    </details>
 
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'termino_clave' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/termino_clave.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Termino Clave
-                        </a>
-                    </div>
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoDocentes) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Docentes</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['docente.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/docente.php">Docente</a>
+                               <a class="nav-link <?= isActivePage($currentPage, ['experiencia.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/experiencia.php">Experiencia</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['evaluacion_docente.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/evaluacion_docente.php">Evaluación Docente</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['reconocimientos.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/reconocimientos.php">Reconocimientos</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['intereses_futuros.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/intereses_futuros.php">Intereses Futuros</a>
+                        </div>
+                    </details>
 
-                    <div class="nav-item px-4">
-                        <a class="nav-link <?= $paginaActual === 'linea_investigacion' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/linea_investigacion.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Linea de Investigación
-                        </a>
-                    </div>
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'facultad' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/facultad.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Facultad
-                        </a>
-                    </div>
-                
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'red' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/red.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Red
-                        </a>
-                    </div>
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoFormacion) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Formación Académica</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['estudios_realizados.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/estudios_realizados.php">Estudios Realizados</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['area_estudio.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/area_estudio.php">Área de Estudio</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['apoyo_profesoral.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/apoyo_profesoral.php">Apoyo Profesoral</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['beca.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/beca.php">Beca</a>
+                        </div>
+                    </details>
 
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'programa' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/programa.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Programa
-                        </a>
-                    </div>
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoEstructura) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Estructura Académica</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['docente_departamento.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/docente_departamento.php">Docente por Departamento</a>
+                        </div>
+                    </details>
 
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'rol' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/rol.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Rol
-                        </a>
-                    </div>
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'usuario' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/usuario.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Usuario
-                        </a>
-                    </div>
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoRedesAcademicas) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Redes Académicas</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['red_docente.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/red_docente.php">Red - Docente</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['rol.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/rol.php">Rol</a>
+                        </div>
+                    </details>
 
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'ruta' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/ruta.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Ruta
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'docente' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/docente.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Docente
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'evaluacion_docente' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/evaluacion_docente.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Evaluación Docente
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'reconocimiento' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/reconocimiento.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Reconocimiento
-                        </a>
-                    </div>
-
-                    <div class="nav-item px-3">
-                        <a class="nav-link <?= $paginaActual === 'experiencia' ? 'active' : '' ?>"
-                           href="<?= $baseUrl ?>/pages/experiencia.php">
-                            <span class="bi bi-list-nested-nav-menu"></span> Experiencia
-                        </a>
-                    </div>
+                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoSeguridad) ? 'open' : '' ?>>
+                        <summary class="nav-link nav-accordion__summary">Seguridad</summary>
+                        <div class="nav flex-column ms-3">
+                            <a class="nav-link <?= isActivePage($currentPage, ['usuario.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/usuario.php">Usuario</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['rol.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/rol.php">Rol</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['usuario_rol.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/usuario_rol.php">Usuario - Rol</a>
+                        </div>
+                    </details>
 
                 </nav>
             </div>
