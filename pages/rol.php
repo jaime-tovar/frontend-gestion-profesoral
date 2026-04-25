@@ -119,8 +119,6 @@ if ($editando && $valorClave) {
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Activo</th>
-                    <th>Fecha Creacion</th>
-                    <th>Fecha Actualizacion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -130,8 +128,6 @@ if ($editando && $valorClave) {
                     <td><?= $reg['nombre'] ?? '' ?></td>
                     <td><?= $reg['descripcion'] ?? '' ?></td>
                     <td><?= (int)($reg['activo'] ?? 0) === 1 ? 'Si' : 'No' ?></td>
-                    <td><?= $reg['fecha_creacion'] ?? '' ?></td>
-                    <td><?= $reg['fecha_actualizacion'] ?? '' ?></td>
                     <td>
                         <a href="rol.php?accion=editar&clave=<?= $reg['id'] ?>" class="btn btn-warning btn-sm me-1">Editar</a>
                         <form method="POST" action="rol.php" style="display:inline" onsubmit="return confirm('¿Eliminar Rol <?= $reg['nombre'] ?? '' ?>?')">

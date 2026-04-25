@@ -185,10 +185,12 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                                href="<?= $baseUrl ?>/pages/experiencia.php">Experiencia</a>
                             <a class="nav-link <?= isActivePage($currentPage, ['evaluacion_docente.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/evaluacion_docente.php">Evaluación Docente</a>
-                            <a class="nav-link <?= isActivePage($currentPage, ['reconocimientos.php']) ? 'active' : '' ?>"
-                               href="<?= $baseUrl ?>/pages/reconocimientos.php">Reconocimientos</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['reconocimiento.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/reconocimiento.php">Reconocimientos</a>
                             <a class="nav-link <?= isActivePage($currentPage, ['intereses_futuros.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/intereses_futuros.php">Intereses Futuros</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['red_docente.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/red_docente.php">Red - Docente</a>
                         </div>
                     </details>
 
@@ -197,8 +199,8 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['estudios_realizados.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/estudios_realizados.php">Estudios Realizados</a>
-                            <a class="nav-link <?= isActivePage($currentPage, ['area_estudio.php']) ? 'active' : '' ?>"
-                               href="<?= $baseUrl ?>/pages/area_estudio.php">Área de Estudio</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['estudio_ac.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/estudio_ac.php">Área de Estudio</a>
                             <a class="nav-link <?= isActivePage($currentPage, ['apoyo_profesoral.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/apoyo_profesoral.php">Apoyo Profesoral</a>
                             <a class="nav-link <?= isActivePage($currentPage, ['beca.php']) ? 'active' : '' ?>"
@@ -214,16 +216,6 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                         </div>
                     </details>
 
-                    <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoRedesAcademicas) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Redes Académicas</summary>
-                        <div class="nav flex-column ms-3">
-                            <a class="nav-link <?= isActivePage($currentPage, ['red_docente.php']) ? 'active' : '' ?>"
-                               href="<?= $baseUrl ?>/pages/red_docente.php">Red - Docente</a>
-                            <a class="nav-link <?= isActivePage($currentPage, ['rol.php']) ? 'active' : '' ?>"
-                               href="<?= $baseUrl ?>/pages/rol.php">Rol</a>
-                        </div>
-                    </details>
-
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoSeguridad) ? 'open' : '' ?>>
                         <summary class="nav-link nav-accordion__summary">Seguridad</summary>
                         <div class="nav flex-column ms-3">
@@ -231,8 +223,8 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                                href="<?= $baseUrl ?>/pages/usuario.php">Usuario</a>
                             <a class="nav-link <?= isActivePage($currentPage, ['rol.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/rol.php">Rol</a>
-                            <a class="nav-link <?= isActivePage($currentPage, ['usuario_rol.php']) ? 'active' : '' ?>"
-                               href="<?= $baseUrl ?>/pages/usuario_rol.php">Usuario - Rol</a>
+                            <a class="nav-link <?= isActivePage($currentPage, ['rol_usuario.php']) ? 'active' : '' ?>"
+                               href="<?= $baseUrl ?>/pages/rol_usuario.php">Permisos</a>
                         </div>
                     </details>
 

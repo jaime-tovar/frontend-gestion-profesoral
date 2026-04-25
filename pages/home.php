@@ -16,7 +16,7 @@
 // ============================================================================
 
 $paginaActual = 'home';              // Resalta "Home" en el sidebar
-$tituloPagina = 'CRUD Facturas';     // Titulo en la pestana del navegador
+$tituloPagina = 'CRUD Gestión Profesoral';     // Titulo en la pestana del navegador
 require __DIR__ . '/../includes/header.php';       // HTML comun (sidebar, mensajes)
 require __DIR__ . '/../services/ApiService.php';   // Para tener API_BASE_URL disponible
 
@@ -35,7 +35,7 @@ if ($respuesta) {
 
 <div class="container mt-4">
 
-    <h1>CRUD - Base de Datos Facturas</h1>
+    <h1>CRUD - Base de Datos Gestión Profesoral</h1>
 
     <p class="lead">
         Frontend PHP que consume la API generica
@@ -43,7 +43,7 @@ if ($respuesta) {
     </p>
 
     <div class="alert alert-info">
-        <strong>Tablas disponibles:</strong> Producto, Persona, Usuario, Empresa, Rol, Ruta, Cliente, Vendedor, Factura.
+        <strong>Tablas disponibles:</strong>
         <br />
         Use el menu lateral para navegar a cada tabla.
     </div>

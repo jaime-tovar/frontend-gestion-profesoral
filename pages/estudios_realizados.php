@@ -268,11 +268,7 @@ if ($vista === 'formulario') {
                         <th>Universidad</th>
                         <th>Fecha</th>
                         <th>Tipo</th>
-                        <th>Ciudad</th>
-                        <th>Pais</th>
                         <th>Ins. Acreditada</th>
-                        <th>Fecha Creacion</th>
-                        <th>Fecha Actualizacion</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -284,16 +280,12 @@ if ($vista === 'formulario') {
                         <td><?= $e['universidad'] ?? '' ?></td>
                         <td><?= $e['fecha'] ?? '' ?></td>
                         <td><?= $e['tipo'] ?? '' ?></td>
-                        <td><?= $e['ciudad'] ?? '' ?></td>
-                        <td><?= $e['pais'] ?? '' ?></td>
                         <td>
                             <?php
                             $insValor = $e['ins_acreditada'] ?? null;
                             echo ($insValor === 1 || $insValor === '1') ? 'Si' : (($insValor === 0 || $insValor === '0') ? 'No' : '');
                             ?>
                         </td>
-                        <td><?= $e['fecha_creacion'] ?? '' ?></td>
-                        <td><?= $e['fecha_actualizacion'] ?? '' ?></td>
                         <td>
                             <a href="estudios_realizados.php?vista=ver&id=<?= $e['id'] ?? '' ?>" class="btn btn-info btn-sm me-1">Ver</a>
                             <a href="estudios_realizados.php?vista=formulario&editar=<?= $e['id'] ?? '' ?>" class="btn btn-warning btn-sm me-1">Editar</a>

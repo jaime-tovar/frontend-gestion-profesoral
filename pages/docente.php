@@ -220,8 +220,6 @@ if ($vista === 'formulario') {
                         <th>Correo</th>
                         <th>Telefono</th>
                         <th>Linea</th>
-                        <th>Fecha Creacion</th>
-                        <th>Fecha Actualizacion</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -234,8 +232,6 @@ if ($vista === 'formulario') {
                         <td><?= $doc['correo'] ?? '' ?></td>
                         <td><?= $doc['telefono'] ?? '' ?></td>
                         <td><?= $doc['nombre_linea'] ?? '' ?></td>
-                        <td><?= $doc['fecha_creacion'] ?? '' ?></td>
-                        <td><?= $doc['fecha_actualizacion'] ?? '' ?></td>
                         <td>
                             <a href="docente.php?vista=ver&id=<?= $doc['id'] ?? '' ?>" class="btn btn-info btn-sm me-1">Ver</a>
                             <a href="docente.php?vista=formulario&editar=<?= $doc['id'] ?? '' ?>" class="btn btn-warning btn-sm me-1">Editar</a>

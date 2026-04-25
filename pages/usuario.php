@@ -208,8 +208,6 @@ if ($validacionFallida) {
                     <th>Email</th>
                     <th>Nombre Completo</th>
                     <th>Activo</th>
-                    <th>Fecha Creacion</th>
-                    <th>Fecha Actualizacion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -220,8 +218,6 @@ if ($validacionFallida) {
                     <td><?= $reg['email'] ?? '' ?></td>
                     <td><?= $reg['nombre_completo'] ?? '' ?></td>
                     <td><?= (int)($reg['activo'] ?? 0) === 1 ? 'Si' : 'No' ?></td>
-                    <td><?= $reg['fecha_creacion'] ?? '' ?></td>
-                    <td><?= $reg['fecha_actualizacion'] ?? '' ?></td>
                     <td>
                         <a href="usuario.php?accion=editar&clave=<?= $reg['id'] ?? '' ?>"
                            class="btn btn-warning btn-sm me-1">Editar</a>

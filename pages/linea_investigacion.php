@@ -264,8 +264,6 @@ if ($editando && $valorClave) {
                 <tr>
                     <th>Nombre</th>
                     <th>Descripción</th>
-                    <th>Fecha Creacion</th>
-                    <th>Fecha Actualizacion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -279,8 +277,6 @@ if ($editando && $valorClave) {
                     <!-- <?= $reg['id'] ?> imprime el valor de la columna 'id' de este registro -->
                     <td><?= $reg['nombre'] ?? '' ?></td>
                     <td><?= $reg['descripcion'] ?? '' ?></td>
-                    <td><?= $reg['fecha_creacion'] ?? '' ?></td>
-                    <td><?= $reg['fecha_actualizacion'] ?? '' ?></td>
                     <td>
                         <!-- Boton Editar: es un link GET que abre el formulario con datos pre-llenados.
                              La URL lleva ?accion=editar&clave=PR001 para que la seccion PHP

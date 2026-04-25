@@ -173,8 +173,6 @@ if ($validacionFallida) {
                     <th>Nombre</th>
                     <th>URL</th>
                     <th>Pais</th>
-                    <th>Fecha Creacion</th>
-                    <th>Fecha Actualizacion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -184,8 +182,6 @@ if ($validacionFallida) {
                     <td><?= $reg['nombre'] ?? '' ?></td>
                     <td><?= $reg['url'] ?? '' ?></td>
                     <td><?= $reg['pais'] ?? '' ?></td>
-                    <td><?= $reg['fecha_creacion'] ?? '' ?></td>
-                    <td><?= $reg['fecha_actualizacion'] ?? '' ?></td>
                     <td>
                         <a href="red.php?accion=editar&clave=<?= $reg['id'] ?>"
                            class="btn btn-warning btn-sm me-1">Editar</a>
