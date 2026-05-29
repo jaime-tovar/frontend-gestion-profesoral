@@ -201,53 +201,92 @@ if ($vista === 'formulario') {
      ====================================================================== -->
 
 <div class="container mt-4">
-    <h3>Docentes</h3>
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h3 class="mb-1"><i class="bi bi-person-badge me-2"></i>Docentes</h3>
+            <p class="text-muted mb-0">Gestionar el registro de docentes de la institucion</p>
+        </div>
+        <?php if ($vista === 'listar'): ?>
+            <a href="docente.php?vista=formulario" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nuevo Docente
+            </a>
+        <?php endif; ?>
+    </div>
 
     <!-- =============================================================== -->
     <!-- VISTA: LISTAR DOCENTES (tabla)                                  -->
     <!-- =============================================================== -->
     <?php if ($vista === 'listar'): ?>
 
-        <a href="docente.php?vista=formulario" class="btn btn-primary mb-3">Nuevo Docente</a>
-
         <?php if (!empty($docentes)): ?>
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Cedula</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Correo</th>
-                        <th>Telefono</th>
-                        <th>Linea</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($docentes as $doc): ?>
-                    <tr>
-                        <td><?= $doc['cedula'] ?? '' ?></td>
-                        <td><?= $doc['nombres'] ?? '' ?></td>
-                        <td><?= $doc['apellidos'] ?? '' ?></td>
-                        <td><?= $doc['correo'] ?? '' ?></td>
-                        <td><?= $doc['telefono'] ?? '' ?></td>
-                        <td><?= $doc['nombre_linea'] ?? '' ?></td>
-                        <td>
-                            <a href="docente.php?vista=ver&id=<?= $doc['id'] ?? '' ?>" class="btn btn-info btn-sm me-1">Ver</a>
-                            <a href="docente.php?vista=formulario&editar=<?= $doc['id'] ?? '' ?>" class="btn btn-warning btn-sm me-1">Editar</a>
-                            <form method="POST" action="docente.php" style="display:inline"
-                                  onsubmit="return confirm('Eliminar docente con cedula <?= $doc['cedula'] ?? '' ?>?')">
-                                <input type="hidden" name="accion_post" value="eliminar" />
-                                <input type="hidden" name="id" value="<?= $doc['id'] ?? '' ?>" />
-                                <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-table me-2"></i>Lista de Docentes</span>
+                    <span class="badge" style="background-color: var(--primary-800);"><?= count($docentes) ?> registros</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Cedula</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Correo</th>
+                                    <th>Telefono</th>
+                                    <th>Linea de Investigacion</th>
+                                    <th style="width: 180px;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($docentes as $doc): ?>
+                                <tr>
+                                    <td class="fw-medium"><?= $doc['cedula'] ?? '' ?></td>
+                                    <td><?= ($doc['nombres'] ?? '') . ' ' . ($doc['apellidos'] ?? '') ?></td>
+                                    <td>
+                                        <a href="mailto:<?= $doc['correo'] ?? '' ?>" class="text-decoration-none" style="color: var(--accent-600);">
+                                            <?= $doc['correo'] ?? '' ?>
+                                        </a>
+                                    </td>
+                                    <td><?= $doc['telefono'] ?? '' ?></td>
+                                    <td><span class="badge" style="background-color: var(--secondary-200); color: var(--primary-700);"><?= $doc['nombre_linea'] ?? '-' ?></span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="docente.php?vista=ver&id=<?= $doc['id'] ?? '' ?>" class="btn btn-info btn-sm" title="Ver detalle">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="docente.php?vista=formulario&editar=<?= $doc['id'] ?? '' ?>" class="btn btn-warning btn-sm" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <form method="POST" action="docente.php"
+                                                  onsubmit="return confirm('Eliminar docente con cedula <?= $doc['cedula'] ?? '' ?>?')">
+                                                <input type="hidden" name="accion_post" value="eliminar" />
+                                                <input type="hidden" name="id" value="<?= $doc['id'] ?? '' ?>" />
+                                                <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         <?php else: ?>
-            <div class="alert alert-warning">No se encontraron docentes.</div>
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-people" style="font-size: 3rem;"></i>
+                </div>
+                <div class="empty-state-title">No hay docentes registrados</div>
+                <div class="empty-state-description">Comience agregando un nuevo docente al sistema.</div>
+                <a href="docente.php?vista=formulario" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Nuevo Docente
+                </a>
+            </div>
         <?php endif; ?>
 
     <!-- =============================================================== -->
@@ -255,55 +294,125 @@ if ($vista === 'formulario') {
     <!-- =============================================================== -->
     <?php elseif ($vista === 'ver'): ?>
 
-        <a href="docente.php" class="btn btn-secondary mb-3">Volver al listado</a>
+        <a href="docente.php" class="btn btn-secondary mb-4">
+            <i class="bi bi-arrow-left me-1"></i> Volver al listado
+        </a>
 
         <?php if ($docente): ?>
-            <div class="card mb-3">
-                <div class="card-header"><strong>Docente</strong></div>
+            <div class="card mb-4">
+                <div class="card-header d-flex align-items-center">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>Informacion del Docente</span>
+                </div>
                 <div class="card-body">
-                    <div class="row mb-2">
-                        <div class="col-md-4"><strong>Cedula:</strong> <?= $docente['cedula'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Nombres:</strong> <?= $docente['nombres'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Apellidos:</strong> <?= $docente['apellidos'] ?? '' ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-4"><strong>Genero:</strong> <?= $docente['genero'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Cargo:</strong> <?= $docente['cargo'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Fecha Nacimiento:</strong> <?= $docente['fecha_nacimiento'] ?? '' ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-4"><strong>Correo:</strong> <?= $docente['correo'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Telefono:</strong> <?= $docente['telefono'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Nacionalidad:</strong> <?= $docente['nacionalidad'] ?? '' ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-4"><strong>Escalafon:</strong> <?= $docente['escalafon'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Categoria Minciencia:</strong> <?= $docente['cat_minciencia'] ?? '' ?></div>
-                        <div class="col-md-4"><strong>Convocatoria Minciencia:</strong> <?= $docente['conv_minciencia'] ?? '' ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-6"><strong>Linea Investigacion:</strong> <?= $docente['nombre_linea'] ?? '' ?></div>
-                        <div class="col-md-6"><strong>URL CVLAC:</strong> <?= $docente['url_cvlac'] ?? '' ?></div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-md-12"><strong>Perfil:</strong> <?= $docente['perfil'] ?? '' ?></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6"><strong>Fecha Creacion:</strong> <?= $docente['fecha_creacion'] ?? '' ?></div>
-                        <div class="col-md-6"><strong>Fecha Actualizacion:</strong> <?= $docente['fecha_actualizacion'] ?? '' ?></div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="detail-label">Cedula</div>
+                            <div class="detail-value"><?= $docente['cedula'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Nombres</div>
+                            <div class="detail-value"><?= $docente['nombres'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Apellidos</div>
+                            <div class="detail-value"><?= $docente['apellidos'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Genero</div>
+                            <div class="detail-value"><?= $docente['genero'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Cargo</div>
+                            <div class="detail-value"><?= $docente['cargo'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Fecha de Nacimiento</div>
+                            <div class="detail-value"><?= $docente['fecha_nacimiento'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Correo Electronico</div>
+                            <div class="detail-value">
+                                <a href="mailto:<?= $docente['correo'] ?? '' ?>" class="text-decoration-none" style="color: var(--accent-600);">
+                                    <?= $docente['correo'] ?? '' ?>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Telefono</div>
+                            <div class="detail-value"><?= $docente['telefono'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Nacionalidad</div>
+                            <div class="detail-value"><?= $docente['nacionalidad'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Escalafon</div>
+                            <div class="detail-value"><?= $docente['escalafon'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Categoria Minciencia</div>
+                            <div class="detail-value"><?= $docente['cat_minciencia'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-label">Convocatoria Minciencia</div>
+                            <div class="detail-value"><?= $docente['conv_minciencia'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">Linea de Investigacion</div>
+                            <div class="detail-value">
+                                <span class="badge" style="background-color: var(--accent-100); color: var(--accent-600);">
+                                    <?= $docente['nombre_linea'] ?? '-' ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">URL CVLAC</div>
+                            <div class="detail-value">
+                                <?php if (!empty($docente['url_cvlac'])): ?>
+                                    <a href="<?= $docente['url_cvlac'] ?>" target="_blank" class="text-decoration-none" style="color: var(--accent-600);">
+                                        <?= $docente['url_cvlac'] ?>
+                                        <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                    </a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="detail-label">Perfil</div>
+                            <div class="detail-value"><?= $docente['perfil'] ?? '-' ?></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">Fecha de Creacion</div>
+                            <div class="detail-value text-muted"><?= $docente['fecha_creacion'] ?? '' ?></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-label">Ultima Actualizacion</div>
+                            <div class="detail-value text-muted"><?= $docente['fecha_actualizacion'] ?? '' ?></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <a href="docente.php?vista=formulario&editar=<?= $docente['id'] ?? '' ?>" class="btn btn-warning me-2">Editar</a>
-            <form method="POST" action="docente.php" style="display:inline"
-                  onsubmit="return confirm('Eliminar docente con cedula <?= $docente['cedula'] ?? '' ?>?')">
-                <input type="hidden" name="accion_post" value="eliminar" />
-                <input type="hidden" name="id" value="<?= $docente['id'] ?? '' ?>" />
-                <button class="btn btn-danger" type="submit">Eliminar</button>
-            </form>
+            <div class="d-flex gap-2">
+                <a href="docente.php?vista=formulario&editar=<?= $docente['id'] ?? '' ?>" class="btn btn-warning">
+                    <i class="bi bi-pencil me-1"></i> Editar
+                </a>
+                <form method="POST" action="docente.php"
+                      onsubmit="return confirm('Eliminar docente con cedula <?= $docente['cedula'] ?? '' ?>?')">
+                    <input type="hidden" name="accion_post" value="eliminar" />
+                    <input type="hidden" name="id" value="<?= $docente['id'] ?? '' ?>" />
+                    <button class="btn btn-danger" type="submit">
+                        <i class="bi bi-trash me-1"></i> Eliminar
+                    </button>
+                </form>
+            </div>
         <?php else: ?>
-            <div class="alert alert-danger">Docente no encontrado.</div>
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Docente no encontrado.
+            </div>
         <?php endif; ?>
 
     <!-- =============================================================== -->
@@ -311,10 +420,13 @@ if ($vista === 'formulario') {
     <!-- =============================================================== -->
     <?php elseif ($vista === 'formulario'): ?>
 
-        <a href="docente.php" class="btn btn-secondary mb-3">Volver al listado</a>
+        <a href="docente.php" class="btn btn-secondary mb-4">
+            <i class="bi bi-arrow-left me-1"></i> Volver al listado
+        </a>
 
-        <div class="card mb-3">
-            <div class="card-header">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-<?= $editando ? 'pencil-square' : 'plus-circle' ?> me-2"></i>
                 <?= $editando ? "Editar Docente" : "Nuevo Docente" ?>
             </div>
             <div class="card-body">
@@ -325,24 +437,29 @@ if ($vista === 'formulario') {
                         <input type="hidden" name="id" value="<?= $docente['id'] ?? '' ?>" />
                     <?php endif; ?>
 
+                    <!-- Seccion: Datos Personales -->
+                    <h6 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-person me-2"></i>Datos Personales
+                    </h6>
+                    
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Cedula</label>
-                            <input class="form-control" name="cedula" value="<?= $docente['cedula'] ?? '' ?>" required />
+                            <label class="form-label">Cedula <span class="text-danger">*</span></label>
+                            <input class="form-control" name="cedula" value="<?= $docente['cedula'] ?? '' ?>" placeholder="Numero de cedula" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Nombres</label>
-                            <input class="form-control" name="nombres" value="<?= $docente['nombres'] ?? '' ?>" required />
+                            <label class="form-label">Nombres <span class="text-danger">*</span></label>
+                            <input class="form-control" name="nombres" value="<?= $docente['nombres'] ?? '' ?>" placeholder="Nombres completos" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Apellidos</label>
-                            <input class="form-control" name="apellidos" value="<?= $docente['apellidos'] ?? '' ?>" required />
+                            <label class="form-label">Apellidos <span class="text-danger">*</span></label>
+                            <input class="form-control" name="apellidos" value="<?= $docente['apellidos'] ?? '' ?>" placeholder="Apellidos completos" required />
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-4">
                         <div class="col-md-4">
-                            <label class="form-label">Genero</label>
+                            <label class="form-label">Genero <span class="text-danger">*</span></label>
                             <select class="form-select" name="genero" required>
                                 <option value="">-- Seleccionar --</option>
                                 <option value="Masculino" <?= ($docente && ($docente['genero'] ?? '') === 'Masculino') ? 'selected' : '' ?>>Masculino</option>
@@ -351,31 +468,16 @@ if ($vista === 'formulario') {
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Cargo</label>
-                            <input class="form-control" name="cargo" value="<?= $docente['cargo'] ?? '' ?>" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Fecha Nacimiento</label>
+                            <label class="form-label">Fecha de Nacimiento <span class="text-danger">*</span></label>
                             <input class="form-control" type="date" name="fecha_nacimiento"
                                    value="<?= $docente['fecha_nacimiento'] ?? '' ?>" required />
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Correo</label>
-                            <input class="form-control" type="email" name="correo" value="<?= $docente['correo'] ?? '' ?>" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Telefono</label>
-                            <input class="form-control" name="telefono" value="<?= $docente['telefono'] ?? '' ?>" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Nacionalidad</label>
+                            <label class="form-label">Nacionalidad <span class="text-danger">*</span></label>
                             <select class="form-select" name="nacionalidad" required>
                                 <option value="">-- Seleccionar --</option>
                                 <option value="Colombiana" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Colombiana') ? 'selected' : '' ?>>Colombiana</option>
-                                <option value="Mexicana" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Mexicana') ? 'selected' : '' ?>>Méxicana</option>
+                                <option value="Mexicana" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Mexicana') ? 'selected' : '' ?>>Mexicana</option>
                                 <option value="Española" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Española') ? 'selected' : '' ?>>Española</option>
                                 <option value="Alemania" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Alemania') ? 'selected' : '' ?>>Alemana</option>
                                 <option value="Otra" <?= ($docente && ($docente['nacionalidad'] ?? '') === 'Otra') ? 'selected' : '' ?>>Otra</option>
@@ -383,24 +485,47 @@ if ($vista === 'formulario') {
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <!-- Seccion: Contacto -->
+                    <h6 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-envelope me-2"></i>Informacion de Contacto
+                    </h6>
+
+                    <div class="row mb-4">
                         <div class="col-md-4">
-                            <label class="form-label">Escalafon</label>
-                            <input class="form-control" name="escalafon" value="<?= $docente['escalafon'] ?? '' ?>" required />
+                            <label class="form-label">Correo Electronico <span class="text-danger">*</span></label>
+                            <input class="form-control" type="email" name="correo" value="<?= $docente['correo'] ?? '' ?>" placeholder="correo@ejemplo.com" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Categoria Minciencia</label>
-                            <input class="form-control" name="cat_minciencia" value="<?= $docente['cat_minciencia'] ?? '' ?>" required />
+                            <label class="form-label">Telefono</label>
+                            <input class="form-control" name="telefono" value="<?= $docente['telefono'] ?? '' ?>" placeholder="Numero de telefono" />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Convocatoria Minciencia</label>
-                            <input class="form-control" name="conv_minciencia" value="<?= $docente['conv_minciencia'] ?? '' ?>" required />
+                            <label class="form-label">URL CVLAC <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" name="url_cvlac"
+                                   value="<?= $docente['url_cvlac'] ?? '' ?>"
+                                   pattern="^(https?://)?www\.[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,24}$"
+                                   title="Use www.ejemplo.com"
+                                   placeholder="www.cvlac.scienti.gov.co/..."
+                                   required />
                         </div>
                     </div>
 
+                    <!-- Seccion: Informacion Academica -->
+                    <h6 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-mortarboard me-2"></i>Informacion Academica
+                    </h6>
+
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Linea Investigacion Principal</label>
+                        <div class="col-md-4">
+                            <label class="form-label">Cargo <span class="text-danger">*</span></label>
+                            <input class="form-control" name="cargo" value="<?= $docente['cargo'] ?? '' ?>" placeholder="Cargo actual" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Escalafon <span class="text-danger">*</span></label>
+                            <input class="form-control" name="escalafon" value="<?= $docente['escalafon'] ?? '' ?>" placeholder="Nivel de escalafon" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Linea de Investigacion <span class="text-danger">*</span></label>
                             <select class="form-select" name="linea_investigacion_principal" required>
                                 <option value="">-- Seleccionar --</option>
                                 <?php foreach ($lineas as $li): ?>
@@ -411,26 +536,38 @@ if ($vista === 'formulario') {
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">URL CVLAC</label>
-                            <input class="form-control" type="text" name="url_cvlac"
-                                   value="<?= $docente['url_cvlac'] ?? '' ?>"
-                                   pattern="^(https?://)?www\.[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,24}$"
-                                   title="Use www.ejemplo.com"
-                                   required />
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label">Categoria Minciencia <span class="text-danger">*</span></label>
+                            <input class="form-control" name="cat_minciencia" value="<?= $docente['cat_minciencia'] ?? '' ?>" placeholder="Categoria" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Convocatoria Minciencia <span class="text-danger">*</span></label>
+                            <input class="form-control" name="conv_minciencia" value="<?= $docente['conv_minciencia'] ?? '' ?>" placeholder="Numero de convocatoria" required />
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">Perfil</label>
-                            <textarea class="form-control" name="perfil" rows="3"><?= $docente['perfil'] ?? '' ?></textarea>
+                    <!-- Seccion: Perfil -->
+                    <h6 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-file-text me-2"></i>Perfil Profesional
+                    </h6>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="form-label">Descripcion del Perfil</label>
+                            <textarea class="form-control" name="perfil" rows="4" placeholder="Descripcion breve del perfil profesional del docente..."><?= $docente['perfil'] ?? '' ?></textarea>
                         </div>
                     </div>
 
-                    <div>
-                        <button class="btn btn-success me-2" type="submit">Guardar</button>
-                        <a href="docente.php" class="btn btn-secondary">Cancelar</a>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success" type="submit">
+                            <i class="bi bi-check-lg me-1"></i> Guardar
+                        </button>
+                        <a href="docente.php" class="btn btn-secondary">
+                            <i class="bi bi-x-lg me-1"></i> Cancelar
+                        </a>
                     </div>
                 </form>
             </div>

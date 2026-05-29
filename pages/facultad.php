@@ -179,144 +179,134 @@ if ($editando && $valorClave) {
 <!-- container = clase Bootstrap que centra el contenido con margenes laterales -->
 <!-- mt-4 = margin-top 4 (espacio arriba) -->
 <div class="container mt-4">
-    <h3>Facultad</h3>
-
-    <!-- ───────── BOTON "NUEVA FACULTAD" ───────── -->
-    <!-- Solo se muestra si NO estamos en el formulario (para no tener dos formularios) -->
-    <!-- La sintaxis "if(): ... endif;" es la forma alternativa de PHP para if(){...}.
-         Se usa cuando hay bloques grandes de HTML en el medio.
-         Es mas legible que abrir y cerrar llaves con HTML mezclado. -->
-    <?php if (!$mostrarFormulario): ?>
-        <!-- Este link lleva a facultad.php?accion=nuevo, que activa el formulario vacio -->
-        <!-- btn btn-primary = boton azul de Bootstrap -->
-        <!-- mb-3 = margin-bottom 3 (espacio abajo) -->
-        <a href="facultad.php?accion=nuevo" class="btn btn-primary mb-3">Nueva Facultad</a>
-    <?php endif; ?>
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h3 class="mb-1"><i class="bi bi-building me-2"></i>Facultades</h3>
+            <p class="text-muted mb-0">Gestionar las facultades de la institucion</p>
+        </div>
+        <?php if (!$mostrarFormulario): ?>
+            <a href="facultad.php?accion=nuevo" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nueva Facultad
+            </a>
+        <?php endif; ?>
+    </div>
 
     <!-- ───────── FORMULARIO (CREAR / EDITAR) ───────── -->
     <!-- Se muestra SOLO si $mostrarFormulario es true (accion=nuevo o accion=editar) -->
     <?php if ($mostrarFormulario): ?>
         <!-- card = componente Bootstrap tipo "tarjeta" con borde, cabecera y cuerpo -->
-        <div class="card mb-3">
-            <div class="card-header">
-                <!-- Operador ternario: condicion ? valor_si_true : valor_si_false
-                     Si estamos editando muestra "Editar Facultad", si no "Nueva Facultad" -->
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-<?= $editando ? 'pencil-square' : 'plus-circle' ?> me-2"></i>
                 <?= $editando ? "Editar Facultad" : "Nueva Facultad" ?>
             </div>
             <div class="card-body">
-                <!-- method="POST" = los datos van en el body HTTP (no visibles en la URL) -->
-                <!-- action="facultad.php" = a donde se envia el formulario (esta misma pagina) -->
-                <!-- onsubmit: si estamos editando, muestra dialogo de confirmacion.
-                     confirm() devuelve true (Aceptar) o false (Cancelar).
-                     "return false" cancela el envio del formulario. -->
                 <form method="POST" action="facultad.php"
-                      onsubmit="<?= $editando ? "return confirm('¿Está seguro de actualizar la facultad?')" : '' ?>">
+                      onsubmit="<?= $editando ? "return confirm('Esta seguro de actualizar la facultad?')" : '' ?>">
 
-                    <!-- Input hidden: dato que se envia pero NO se ve en pantalla.
-                         Le dice a la seccion POST de arriba QUE hacer: 'crear' o 'actualizar'.
-                         name="accion_post" = la clave en $_POST['accion_post']
-                         value="crear" o "actualizar" = el valor que recibe PHP -->
                     <input type="hidden" name="accion_post" value="<?= $editando ? 'actualizar' : 'crear' ?>" />
 
                     <?php if ($editando): ?>
                         <input type="hidden" name="id" value="<?= $registro['id'] ?? '' ?>" />
                     <?php endif; ?>
 
-                    <!-- row + col-md-6 = grid de Bootstrap.
-                         row = fila contenedora.
-                         col-md-6 = ocupa 6 de 12 columnas en pantallas medianas (50%).
-                         En desktop: 2 campos por fila. En movil: 1 campo por fila. -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input class="form-control" name="nombre"
-                                value="<?= $registro['nombre'] ?? '' ?>" />
+                            <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                            <input class="form-control" name="nombre" placeholder="Ingrese el nombre de la facultad"
+                                value="<?= $registro['nombre'] ?? '' ?>" required />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Activo</label>
+                            <label class="form-label">Estado</label>
                             <?php $activoValor = (string)($registro['activo'] ?? '1'); ?>
                             <select class="form-select" name="activo">
-                                <option value="1" <?= $activoValor === '1' ? 'selected' : '' ?>>Si</option>
-                                <option value="0" <?= $activoValor === '0' ? 'selected' : '' ?>>No</option>
+                                <option value="1" <?= $activoValor === '1' ? 'selected' : '' ?>>Activo</option>
+                                <option value="0" <?= $activoValor === '0' ? 'selected' : '' ?>>Inactivo</option>
                             </select>
                         </div>
                     </div>
-                    <!-- Boton Guardar: type="submit" = al hacer clic, envia el formulario (POST) -->
-                    <!-- btn-success = boton verde de Bootstrap -->
-                    <button class="btn btn-success me-2" type="submit">Guardar</button>
-                    <!-- Boton Cancelar: es un <a> (link), NO un boton de submit.
-                         No envia nada, simplemente vuelve a facultad.php (la lista). -->
-                    <!-- btn-secondary = boton gris de Bootstrap -->
-                    <a href="facultad.php" class="btn btn-secondary">Cancelar</a>
+                    
+                    <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-success" type="submit">
+                            <i class="bi bi-check-lg me-1"></i> Guardar
+                        </button>
+                        <a href="facultad.php" class="btn btn-secondary">
+                            <i class="bi bi-x-lg me-1"></i> Cancelar
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
     <?php endif; ?>
 
     <!-- ───────── TABLA DE REGISTROS ───────── -->
-    <!-- Se muestra siempre (tanto si el formulario esta visible como si no) -->
-    <!-- !empty($registros) = verificar que hay datos para mostrar -->
     <?php if (!empty($registros)): ?>
-        <!-- table = tabla HTML con estilos Bootstrap -->
-        <!-- table-striped = filas alternando color (gris/blanco) para facilitar lectura -->
-        <!-- table-hover = la fila se resalta cuando pasas el mouse encima -->
-        <table class="table table-striped table-hover">
-            <!-- thead = cabecera de la tabla (fila de titulos) -->
-            <!-- table-dark = fondo oscuro para la cabecera -->
-            <thead class="table-dark">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <!-- tbody = cuerpo de la tabla (las filas de datos) -->
-            <tbody>
-                 <!-- foreach recorre cada registro y genera una fila <tr> por cada facultad.
-                     $reg = una facultad: ['id'=>'...','nombre'=>'...','activo'=>1]
-                     Se genera tanto HTML como facultades haya en el array. -->
-                <?php foreach ($registros as $reg): ?>
-                <tr>
-                    <!-- <?= $reg['id'] ?> imprime el valor de la columna 'id' de este registro -->
-                    <td><?= $reg['nombre'] ?? '' ?></td>
-                    <td><?= (int)($reg['activo'] ?? 0) === 1 ? 'Si' : 'No' ?></td>
-                    <td>
-                        <!-- Boton Editar: es un link GET que abre el formulario con datos pre-llenados.
-                             La URL lleva ?accion=editar&clave=PR001 para que la seccion PHP
-                             de arriba sepa que mostrar el formulario con datos de PR001. -->
-                        <!-- btn-warning = boton amarillo. btn-sm = boton pequeno -->
-                        <!-- me-1 = margin-end 1 (espacio entre este boton y el siguiente) -->
-                                <a href="facultad.php?accion=editar&clave=<?= $reg['id'] ?>"
-                           class="btn btn-warning btn-sm me-1">Editar</a>
-
-                        <!-- Boton Eliminar: es un formulario POST (no un link GET).
-                             Se usa POST porque eliminar es una accion que MODIFICA datos.
-                             Los links GET no deberian modificar datos (convencion HTTP). -->
-                        <!-- style="display:inline" = que el form quede al lado del boton Editar,
-                             no en una linea nueva (por defecto <form> es display:block). -->
-                        <!-- onsubmit="return confirm(...)" = dialogo de confirmacion:
-                             confirm() muestra un popup con Aceptar/Cancelar.
-                             Si clic "Aceptar" -> confirm() devuelve true -> el form se envia.
-                             Si clic "Cancelar" -> confirm() devuelve false -> return false -> NO se envia. -->
-                        <form method="POST" action="facultad.php" style="display:inline"
-                            onsubmit="return confirm('¿Está seguro de eliminar la facultad \'<?= $reg['nombre'] ?? '' ?>\'?')">
-                               <!-- Estos inputs hidden le dicen a la seccion POST:
-                                   accion_post='eliminar' = que hacer
-                                   id='UUID' = que registro eliminar -->
-                            <input type="hidden" name="accion_post" value="eliminar" />
-                            <input type="hidden" name="id" value="<?= $reg['id'] ?? '' ?>" />
-                            <!-- btn-danger = boton rojo de Bootstrap -->
-                            <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-table me-2"></i>Lista de Facultades</span>
+                <span class="badge" style="background-color: var(--primary-800);"><?= count($registros) ?> registros</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th style="width: 120px;">Estado</th>
+                                <th style="width: 180px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($registros as $reg): ?>
+                            <tr>
+                                <td class="fw-medium"><?= $reg['nombre'] ?? '' ?></td>
+                                <td>
+                                    <?php if ((int)($reg['activo'] ?? 0) === 1): ?>
+                                        <span class="badge badge-active">
+                                            <i class="bi bi-check-circle me-1"></i>Activo
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge badge-inactive">
+                                            <i class="bi bi-x-circle me-1"></i>Inactivo
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="facultad.php?accion=editar&clave=<?= $reg['id'] ?>"
+                                           class="btn btn-warning btn-sm" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="POST" action="facultad.php"
+                                            onsubmit="return confirm('Esta seguro de eliminar la facultad \'<?= $reg['nombre'] ?? '' ?>\'?')">
+                                            <input type="hidden" name="accion_post" value="eliminar" />
+                                            <input type="hidden" name="id" value="<?= $reg['id'] ?? '' ?>" />
+                                            <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     <?php else: ?>
-        <!-- Si no hay registros, mostrar un mensaje de advertencia -->
-        <!-- alert alert-warning = caja amarilla de Bootstrap -->
-        <div class="alert alert-warning">No se encontraron registros en la tabla facultad.</div>
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+            </div>
+            <div class="empty-state-title">No hay facultades registradas</div>
+            <div class="empty-state-description">Comience creando una nueva facultad.</div>
+            <a href="facultad.php?accion=nuevo" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nueva Facultad
+            </a>
+        </div>
     <?php endif; ?>
 
 </div>
