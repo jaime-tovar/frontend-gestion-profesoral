@@ -140,100 +140,153 @@ if ($validacionFallida) {
 ?>
 
 <div class="container mt-4">
-    <h3>Usuarios</h3>
-
-    <?php if (!$mostrarFormulario): ?>
-        <a href="usuario.php?accion=nuevo" class="btn btn-primary mb-3">Nuevo Usuario</a>
-    <?php endif; ?>
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h3 class="mb-1"><i class="bi bi-person-gear me-2"></i>Usuarios</h3>
+            <p class="text-muted mb-0">Gestionar los usuarios del sistema</p>
+        </div>
+        <?php if (!$mostrarFormulario): ?>
+            <a href="usuario.php?accion=nuevo" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
+            </a>
+        <?php endif; ?>
+    </div>
 
     <?php if ($mostrarFormulario): ?>
-        <div class="card mb-3">
-            <div class="card-header">
+        <div class="card mb-4">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-<?= $editando ? 'pencil-square' : 'plus-circle' ?> me-2"></i>
                 <?= $editando ? "Editar Usuario" : "Nuevo Usuario" ?>
             </div>
             <div class="card-body">
                 <form method="POST" action="usuario.php"
-                      onsubmit="<?= $editando ? "return confirm('¿Está seguro de actualizar el Usuario?')" : '' ?>">
+                      onsubmit="<?= $editando ? "return confirm('Esta seguro de actualizar el Usuario?')" : '' ?>">
                     <input type="hidden" name="accion_post" value="<?= $editando ? 'actualizar' : 'crear' ?>" />
                     <?php if ($editando): ?>
                         <input type="hidden" name="id" value="<?= $registro['id'] ?? '' ?>" />
                     <?php endif; ?>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Username</label>
-                            <input class="form-control" name="username"
+                            <label class="form-label">Username <span class="text-danger">*</span></label>
+                            <input class="form-control" name="username" placeholder="Nombre de usuario"
                                    value="<?= $registro['username'] ?? '' ?>"
                                    <?= $editando ? 'disabled' : '' ?> />
                             <?php if ($editando): ?>
-                                <!-- Mantener username en POST cuando el input esta deshabilitado -->
                                 <input type="hidden" name="username" value="<?= $registro['username'] ?? '' ?>" />
                             <?php endif; ?>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input class="form-control" type="email" name="email"
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input class="form-control" type="email" name="email" placeholder="correo@ejemplo.com"
                                    value="<?= $registro['email'] ?? '' ?>" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Password</label>
-                            <input class="form-control" type="password" name="password"
+                            <label class="form-label">Password <span class="text-danger">*</span></label>
+                            <input class="form-control" type="password" name="password" placeholder="Minimo 6 caracteres"
                                    value="<?= $registro['password'] ?? '' ?>" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Nombre Completo</label>
-                            <input class="form-control" name="nombre_completo"
+                            <label class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+                            <input class="form-control" name="nombre_completo" placeholder="Nombre y apellidos"
                                    value="<?= $registro['nombre_completo'] ?? '' ?>" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Activo</label>
+                            <label class="form-label">Estado</label>
                             <?php $activoValor = (string)($registro['activo'] ?? '1'); ?>
                             <select class="form-select" name="activo">
-                                <option value="1" <?= $activoValor === '1' ? 'selected' : '' ?>>Si</option>
-                                <option value="0" <?= $activoValor === '0' ? 'selected' : '' ?>>No</option>
+                                <option value="1" <?= $activoValor === '1' ? 'selected' : '' ?>>Activo</option>
+                                <option value="0" <?= $activoValor === '0' ? 'selected' : '' ?>>Inactivo</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-success me-2" type="submit">Guardar</button>
-                    <a href="usuario.php" class="btn btn-secondary">Cancelar</a>
+                    <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-success" type="submit">
+                            <i class="bi bi-check-lg me-1"></i> Guardar
+                        </button>
+                        <a href="usuario.php" class="btn btn-secondary">
+                            <i class="bi bi-x-lg me-1"></i> Cancelar
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
     <?php endif; ?>
 
     <?php if (!empty($registros)): ?>
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Nombre Completo</th>
-                    <th>Activo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($registros as $reg): ?>
-                <tr>
-                    <td><?= $reg['username'] ?? '' ?></td>
-                    <td><?= $reg['email'] ?? '' ?></td>
-                    <td><?= $reg['nombre_completo'] ?? '' ?></td>
-                    <td><?= (int)($reg['activo'] ?? 0) === 1 ? 'Si' : 'No' ?></td>
-                    <td>
-                        <a href="usuario.php?accion=editar&clave=<?= $reg['id'] ?? '' ?>"
-                           class="btn btn-warning btn-sm me-1">Editar</a>
-                        <form method="POST" action="usuario.php" style="display:inline"
-                              onsubmit="return confirm('¿Está seguro de eliminar el Usuario \'<?= $reg['username'] ?? '' ?>\'?')">
-                            <input type="hidden" name="accion_post" value="eliminar" />
-                            <input type="hidden" name="id" value="<?= $reg['id'] ?? '' ?>" />
-                            <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-table me-2"></i>Lista de Usuarios</span>
+                <span class="badge" style="background-color: var(--primary-800);"><?= count($registros) ?> registros</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Nombre Completo</th>
+                                <th style="width: 120px;">Estado</th>
+                                <th style="width: 150px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($registros as $reg): ?>
+                            <tr>
+                                <td class="fw-medium"><?= $reg['username'] ?? '' ?></td>
+                                <td>
+                                    <a href="mailto:<?= $reg['email'] ?? '' ?>" class="text-decoration-none" style="color: var(--accent-600);">
+                                        <?= $reg['email'] ?? '' ?>
+                                    </a>
+                                </td>
+                                <td><?= $reg['nombre_completo'] ?? '' ?></td>
+                                <td>
+                                    <?php if ((int)($reg['activo'] ?? 0) === 1): ?>
+                                        <span class="badge badge-active">
+                                            <i class="bi bi-check-circle me-1"></i>Activo
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge badge-inactive">
+                                            <i class="bi bi-x-circle me-1"></i>Inactivo
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="usuario.php?accion=editar&clave=<?= $reg['id'] ?? '' ?>"
+                                           class="btn btn-warning btn-sm" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="POST" action="usuario.php"
+                                              onsubmit="return confirm('Esta seguro de eliminar el Usuario \'<?= $reg['username'] ?? '' ?>\'?')">
+                                            <input type="hidden" name="accion_post" value="eliminar" />
+                                            <input type="hidden" name="id" value="<?= $reg['id'] ?? '' ?>" />
+                                            <button class="btn btn-danger btn-sm" type="submit" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     <?php else: ?>
-        <div class="alert alert-warning">No se encontraron registros en la tabla usuario.</div>
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="bi bi-people" style="font-size: 3rem;"></i>
+            </div>
+            <div class="empty-state-title">No hay usuarios registrados</div>
+            <div class="empty-state-description">Comience creando un nuevo usuario.</div>
+            <a href="usuario.php?accion=nuevo" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
+            </a>
+        </div>
     <?php endif; ?>
 </div>
 

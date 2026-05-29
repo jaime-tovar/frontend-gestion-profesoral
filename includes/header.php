@@ -109,8 +109,16 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
          Si no esta definida, usa 'Menú Gestion Profesoral' como default (operador ??). -->
     <title><?= $tituloPagina ?? 'Menú Gestion Profesoral' ?></title>
 
+    <!-- Google Fonts - Inter for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS desde CDN (Content Delivery Network) — no necesita instalacion -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
     <!-- CSS custom del proyecto (sidebar, layout responsive, etc.) -->
     <link href="<?= $baseUrl ?>/assets/css/app.css" rel="stylesheet" />
@@ -153,13 +161,16 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                     <div class="nav-item px-3">
                         <a class="nav-link <?= isActivePage($currentPage, ['home.php']) ? 'active' : '' ?>"
                            href="<?= $baseUrl ?>/pages/home.php">
-                            Home
+                            <i class="bi bi-house-door me-2"></i>
+                            Inicio
                         </a>
                     </div>
 
                     <!-- Menu en acordeon usando <details> para no depender de JavaScript -->
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoCatalogos) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Catálogos</summary>
+                        <summary class="nav-link nav-accordion__summary">
+                            <span><i class="bi bi-folder me-2"></i>Catalogos</span>
+                        </summary>
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['facultad.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/facultad.php">Facultad</a>
@@ -177,7 +188,9 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                     </details>
 
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoDocentes) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Docentes</summary>
+                        <summary class="nav-link nav-accordion__summary">
+                            <span><i class="bi bi-people me-2"></i>Docentes</span>
+                        </summary>
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['docente.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/docente.php">Docente</a>
@@ -195,7 +208,9 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                     </details>
 
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoFormacion) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Formación Académica</summary>
+                        <summary class="nav-link nav-accordion__summary">
+                            <span><i class="bi bi-mortarboard me-2"></i>Formacion Academica</span>
+                        </summary>
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['estudios_realizados.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/estudios_realizados.php">Estudios Realizados</a>
@@ -209,7 +224,9 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                     </details>
 
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoEstructura) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Estructura Académica</summary>
+                        <summary class="nav-link nav-accordion__summary">
+                            <span><i class="bi bi-building me-2"></i>Estructura Academica</span>
+                        </summary>
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['docente_departamento.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/docente_departamento.php">Docente por Departamento</a>
@@ -217,7 +234,9 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                     </details>
 
                     <details class="nav-item px-3 nav-accordion" <?= isActivePage($currentPage, $grupoSeguridad) ? 'open' : '' ?>>
-                        <summary class="nav-link nav-accordion__summary">Seguridad</summary>
+                        <summary class="nav-link nav-accordion__summary">
+                            <span><i class="bi bi-shield-lock me-2"></i>Seguridad</span>
+                        </summary>
                         <div class="nav flex-column ms-3">
                             <a class="nav-link <?= isActivePage($currentPage, ['usuario.php']) ? 'active' : '' ?>"
                                href="<?= $baseUrl ?>/pages/usuario.php">Usuario</a>
@@ -235,7 +254,7 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
         <!-- ───────── CONTENIDO PRINCIPAL ───────── -->
         <main>
             <div class="top-row px-4">
-                <span>Gestión Profesoral</span>
+                <span><i class="bi bi-grid-3x3-gap me-2"></i>Sistema de Gestion Profesoral</span>
             </div>
 
             <article class="content px-4">
@@ -247,9 +266,10 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
                 // y redirige. Aca se muestra y se borra con unset().
                 ?>
                 <?php if (isset($_SESSION['mensaje'])): ?>
-                    <div class="alert alert-<?= $_SESSION['tipo'] ?? 'info' ?> alert-dismissible fade show mt-3">
+                    <div class="alert alert-<?= $_SESSION['tipo'] ?? 'info' ?> alert-dismissible fade show mt-3" role="alert">
+                        <i class="bi bi-<?= ($_SESSION['tipo'] ?? 'info') === 'success' ? 'check-circle' : (($_SESSION['tipo'] ?? 'info') === 'danger' ? 'exclamation-triangle' : 'info-circle') ?> me-2"></i>
                         <?= $_SESSION['mensaje'] ?>
-                        <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                     </div>
                     <?php unset($_SESSION['mensaje'], $_SESSION['tipo']); ?>
                 <?php endif; ?>
