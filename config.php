@@ -28,5 +28,5 @@
 // La URL donde corre la API. El frontend le hace peticiones HTTP a esta URL.
 // Si la API esta en otro puerto: cambiar 8000 por el puerto correcto.
 // Si la API esta en otra maquina: cambiar localhost por la IP (ej: 'http://192.168.1.100:8000')
-define('API_BASE_URL', 'api-gestion-profesoral.infinityfree.me');
+define('API_BASE_URL', 'http://api-gestion-profesoral.infinityfree.me');
 ?>

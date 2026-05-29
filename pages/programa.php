@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $datos = [
             'cant_graduados'  => $_POST['cant_graduados'] ?? '',
             'ciudad'       => $_POST['ciudad'] ?? '',
-            'facultad' => $_POST['facultad'] ?? '',
+            'facultad_id' => $_POST['facultad_id'] ?? '',
             'fecha_cierre' => $_POST['fecha_cierre'] ?? '',
             'nivel' => $_POST['nivel'] ?? '',
             'nombre' => $_POST['nombre'] ?? '',
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $datos = [
             'cant_graduados'  => $_POST['cant_graduados'] ?? '',
             'ciudad'       => $_POST['ciudad'] ?? '',
-            'facultad' => $_POST['facultad'] ?? '',
+            'facultad_id' => $_POST['facultad_id'] ?? '',
             'fecha_cierre' => $_POST['fecha_cierre'] ?? '',
             'nivel' => $_POST['nivel'] ?? '',
             'nombre' => $_POST['nombre'] ?? '',
@@ -144,11 +144,26 @@ require __DIR__ . '/../includes/header.php';
 // $_GET es un array superglobal con los parametros de la URL.
 $accion = $_GET['accion'] ?? '';        // ?accion=editar -> 'editar', si no viene -> ''
 $valorClave = $_GET['clave'] ?? '';     // ?clave=PR001 -> 'PR001'
+$facultades = $api->listar('facultad');
+$lineas = $api->listar('linea_investigacion');
 
 // Llamar a la API para obtener TODOS los registros.
 // GET http://localhost:8000/api/programa
 // $registros = [['id'=>'...','gran_area'=>'...','area'=>'...'], ...]
 $registros = $api->listar($tabla);
+
+$mapaFacultades = [];
+foreach ($facultades as $facultad) {
+    $mapaFacultades[$facultad['id'] ?? ''] = $facultad['nombre'] ?? '';
+}
+foreach ($registros as &$reg) {
+    if (!isset($reg['facultad_id']) && isset($reg['facultad'])) {
+        $reg['facultad_id'] = $reg['facultad'];
+    }
+    $facultadId = $reg['facultad_id'] ?? '';
+    $reg['nombre_facultad'] = $mapaFacultades[$facultadId] ?? '';
+}
+unset($reg);
 
 // Determinar si debemos mostrar el formulario o la tabla.
 // in_array('editar', ['nuevo', 'editar']) -> true (esta en la lista)
@@ -243,10 +258,19 @@ if ($editando && $valorClave) {
                                 value="<?= $registro['nombre'] ?? '' ?>" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Facultad</label>
-                            <input class="form-control" name="facultad"
-                                value="<?= $registro['facultad'] ?? '' ?>" />
+                            <label class="form-label">Facultad<span class="text-danger">*</span></label>
+                            <select class="form-select" name="facultad_id" required>
+                                <option value="">-- Seleccionar --</option>
+                                <?php foreach ($facultades as $f): ?>
+                                    <option value="<?= $f['id'] ?? '' ?>"
+                                        <?= ($editando && $registro && ($registro['facultad_id'] ?? '') == ($f['id'] ?? '')) ? 'selected' : '' ?>>
+                                        <?= $f['nombre'] ?? '' ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
+
+
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nivel</label>
                                 <input class="form-control" name="nivel"
@@ -320,9 +344,9 @@ if ($editando && $valorClave) {
                     <td><?= $reg['nombre'] ?? '' ?></td>
                     <td><?= $reg['nivel'] ?? '' ?></td>
                     <td><?= $reg['ciudad'] ?? '' ?></td>
-                    <td><?= $reg['facultad'] ?? '' ?></td>
+                    <td><?= $reg['nombre_facultad'] ?? '' ?></td>
                     <td><?= $reg['cant_graduados'] ?? '' ?></td>
-                    <td><?= $reg['num_cohortes'] ?? '' ?></td>
+                    <td><?= $reg['numero_cohortes'] ?? ($reg['num_cohortes'] ?? '') ?></td>
                     <td><?= $reg['fecha_cierre'] ?? '' ?></td>
                     <td>
                         <!-- Boton Editar: es un link GET que abre el formulario con datos pre-llenados.
