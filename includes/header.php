@@ -85,6 +85,13 @@ if (!isset($paginaActual)) $paginaActual = '';
 // Usar el nombre del archivo actual para marcar el menu activo.
 $currentPage = basename($_SERVER['SCRIPT_NAME']);
 
+// Requerir login para todas las paginas excepto login.php.
+$publicPages = ['login.php'];
+if (empty($_SESSION['usuario_email']) && !in_array($currentPage, $publicPages, true)) {
+    header('Location: ' . $baseUrl . '/pages/login.php');
+    exit;
+}
+
 // Helper simple para comparar archivos activos.
 function isActivePage(string $currentPage, array $files): bool {
     return in_array($currentPage, $files, true);
@@ -255,6 +262,18 @@ $grupoSeguridad = ['usuario.php', 'rol.php'];
         <main>
             <div class="top-row px-4">
                 <span><i class="bi bi-grid-3x3-gap me-2"></i>Sistema de Gestion Profesoral</span>
+                <?php if (!empty($_SESSION['usuario_email'])): ?>
+                    <div class="d-flex align-items-center gap-2 ms-auto">
+                        <?php if (!empty($_SESSION['usuario_nombre'])): ?>
+                            <span class="text-muted small d-none d-sm-inline">
+                                <?= htmlspecialchars($_SESSION['usuario_nombre'], ENT_QUOTES, 'UTF-8') ?>
+                            </span>
+                        <?php endif; ?>
+                        <a class="btn btn-outline-secondary btn-sm" href="<?= $baseUrl ?>/pages/logout.php">
+                            <i class="bi bi-box-arrow-right me-1"></i>Cerrar sesion
+                        </a>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <article class="content px-4">
