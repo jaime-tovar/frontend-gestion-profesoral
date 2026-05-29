@@ -123,7 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['email']) || isset($_GE
 				</form>
 
 				<div class="mt-3 small text-muted">
-					Ingrese su email y contrasena registrados en el sistema.
+					Usar las siguientes credenciales:<br>
+					Email: docente@uni.edu<br>
+					Contrasena: docente123
 				</div>
 			</div>
 		</div>
